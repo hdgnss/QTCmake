@@ -31,25 +31,33 @@ jobs:
 
     - name: Configure
       shell: cmd
-      run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+      run: cmake -B ${{github.workspace}}\build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
 
     - name: Build
       shell: cmd
-      run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
+      run: cmake --build ${{github.workspace}}\build --config ${{env.BUILD_TYPE}}
         
     - name: Package
       shell: pwsh
       run: |
+        cp -r 3rd/* build
         windeployqt --no-translations --compiler-runtime build\Release\${env:TARGET_NAME}'.exe'
-        echo A
         ls build\Release
+        echo A
         cd build
         mv Release ${env:TARGET_NAME}
         py7zr c ${env:TARGET_NAME}'.7z' ${env:TARGET_NAME} 
         echo B
         ls .
-        cmd /c copy /b ${github.workspace}/3rd/7zsd_All.sfx + ${github.workspace}/3rd/config.txt + ${env:TARGET_NAME}'.7z'  ${env:TARGET_NAME}_setup.exe
-        dir
+        cmd /c copy /b 7zsd_All.sfx + config.txt + QTCmake.7z  QTCmake_setup1.exe
+        echo C
+        ls .
+        cmd /c copy /b 7zsd_All.sfx + config.txt + ${env:TARGET_NAME}'.7z'  QTCmake_setup2.exe
+        echo D
+        ls .
+        cmd /c copy /b 7zsd_All.sfx + config.txt + ${env:TARGET_NAME}'.7z'  ${env:TARGET_NAME}_setup.exe
+        echo E
+        ls .
         cd ..
 
     - name: Release
