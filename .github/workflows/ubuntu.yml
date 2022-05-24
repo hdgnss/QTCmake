@@ -1,0 +1,42 @@
+name: Ubuntu
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+env:
+  BUILD_TYPE: Release
+  TARGET_NAME: QTCmake
+
+jobs:
+  build:
+    name: Build on ubuntu
+    runs-on: ubuntu-20.04
+
+    steps:
+    - name: Install
+      uses: jurplel/install-qt-action@v2
+      with:
+        version: 6.2.2
+        cached: 'false'
+
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Configure
+      run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+
+    - name: Build
+      run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
+
+    - name: Release
+      if: startsWith(github.event.ref, 'refs/tags/')
+      uses: svenstaro/upload-release-action@v2
+      with:
+        repo_token: ${{ secrets.GITHUB_TOKEN }}
+        file: build/${{ env.TARGET_NAME }}
+        asset_name: ${{ env.targetName }}_${{ github.ref_name }}
+        tag: ${{ github.ref }}
+        overwrite: true
