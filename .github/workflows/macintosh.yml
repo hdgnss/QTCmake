@@ -38,9 +38,8 @@ jobs:
     - name: Build
       run: cmake --build ${{github.workspace}}/build --config ${{ env.BUILD_TYPE }}
 
-    - name: Check
+    - name: Package
       run: |
-        ls -l build
         cd build
         macdeployqt ${{ env.TARGET_NAME }}.app -qmldir=. -verbose=1 -dmg
         cd ..
