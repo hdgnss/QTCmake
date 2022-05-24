@@ -50,7 +50,7 @@ jobs:
         py7zr c ${env:TARGET_NAME}'.7z' ${env:TARGET_NAME} 
         echo D
         cd ..
-        cat ${github.workspace}/3rd/7zsd_All.sfx ${github.workspace}/3rd/config.txt ${env:TARGET_NAME}'.7z' > ${env:TARGET_NAME}_setup.exe
+        # cat ${github.workspace}/3rd/7zsd_All.sfx ${github.workspace}/3rd/config.txt ${env:TARGET_NAME}'.7z' > ${env:TARGET_NAME}_setup.exe
         ls build
 
     - name: Release
@@ -58,7 +58,7 @@ jobs:
       uses: svenstaro/upload-release-action@v2
       with:
         repo_token: ${{ secrets.GITHUB_TOKEN }}
-        file: build/${{ env.TARGET_NAME }}_setup.exe
-        asset_name: ${{ env.TARGET_NAME }}_setup_${{ github.ref_name }}.exe
+        file: build/${{ env.TARGET_NAME }}.7z
+        asset_name: ${{ env.TARGET_NAME }}_setup_${{ github.ref_name }}.7z
         tag: ${{ github.ref }}
         overwrite: true
