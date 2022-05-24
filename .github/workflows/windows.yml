@@ -41,21 +41,16 @@ jobs:
       shell: pwsh
       run: |
         ls build\Release
-        rm -r build\Release\*.h
-        rm -r build\Release\*.obj
-        rm -r build\Release\*.cpp
-        ls build\Release
         echo A
         windeployqt --no-translations --compiler-runtime build\Release\${env:TARGET_NAME}.exe
-        echo B
         ls build\Release
         cd build
         echo C
-        ls Release
-        py7zr c QTCmake.7z Release 
+        mv Release ${env:TARGET_NAME}
+        py7zr c ${env:TARGET_NAME}.7z ${env:TARGET_NAME} 
         echo D
-        ls Release
         cd ..
+        cat ${github.workspace}/3rd/7zsd_All.sfx ${github.workspace}/3rd/config.txt ${env:TARGET_NAME}.7z > ${env:TARGET_NAME}_setup.exe
         ls build
 
     - name: Release
@@ -63,7 +58,7 @@ jobs:
       uses: svenstaro/upload-release-action@v2
       with:
         repo_token: ${{ secrets.GITHUB_TOKEN }}
-        file: build/${{ env.TARGET_NAME }}.7z
-        asset_name: ${{ env.TARGET_NAME }}_${{ github.ref_name }}.7z
+        file: build/${{ env.TARGET_NAME }}_setup.exe
+        asset_name: ${{ env.TARGET_NAME }}_setup_${{ github.ref_name }}.exe
         tag: ${{ github.ref }}
         overwrite: true
