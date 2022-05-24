@@ -39,6 +39,6 @@ jobs:
       with:
         repo_token: ${{ secrets.GITHUB_TOKEN }}
         file: build/${{ env.TARGET_NAME }}
-        asset_name: ${{ env.TARGET_NAME }}_${{ github.ref_name }}
+        asset_name: ${{ env.TARGET_NAME }}_ubuntu_${{ github.ref_name }}
         tag: ${{ github.ref }}
         overwrite: true
