@@ -42,15 +42,15 @@ jobs:
       run: |
         ls build\Release
         echo A
-        windeployqt --no-translations --compiler-runtime build\Release\${env:TARGET_NAME}.exe
+        windeployqt --no-translations --compiler-runtime build\Release\${env:TARGET_NAME}'.exe'
         ls build\Release
         cd build
         echo C
         mv Release ${env:TARGET_NAME}
-        py7zr c ${env:TARGET_NAME}.7z ${env:TARGET_NAME} 
+        py7zr c ${env:TARGET_NAME}'.7z' ${env:TARGET_NAME} 
         echo D
         cd ..
-        cat ${github.workspace}/3rd/7zsd_All.sfx ${github.workspace}/3rd/config.txt ${env:TARGET_NAME}.7z > ${env:TARGET_NAME}_setup.exe
+        cat ${github.workspace}/3rd/7zsd_All.sfx ${github.workspace}/3rd/config.txt ${env:TARGET_NAME}'.7z' > ${env:TARGET_NAME}_setup.exe
         ls build
 
     - name: Release
