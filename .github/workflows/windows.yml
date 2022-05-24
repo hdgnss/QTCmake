@@ -30,28 +30,30 @@ jobs:
       uses: actions/checkout@v3
 
     - name: Configure
-      shell: cmd
-      run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+      shell: pwsh
+      run: cmake -B ${github.workspace}/build -DCMAKE_BUILD_TYPE=${env.BUILD_TYPE}
 
     - name: Build
-      shell: cmd
-      run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
-
-    - name: Package
       shell: pwsh
       run: |
-        ls build\Release
-        echo A
+        cmake --build ${github.workspace}/build --config ${env.BUILD_TYPE}
         windeployqt --no-translations --compiler-runtime build\Release\${env:TARGET_NAME}'.exe'
         ls build\Release
         cd build
-        echo C
         mv Release ${env:TARGET_NAME}
         py7zr c ${env:TARGET_NAME}'.7z' ${env:TARGET_NAME} 
         echo D
         cd ..
-        # cat ${github.workspace}/3rd/7zsd_All.sfx ${github.workspace}/3rd/config.txt ${env:TARGET_NAME}'.7z' > ${env:TARGET_NAME}_setup.exe
-        ls build
+        ls build\Release
+
+    - name: Package
+      shell: cmd
+      run: |
+        cd build
+        dir
+        copy /b ${{github.workspace}}/3rd/7zsd_All.sfx + ${{github.workspace}}/3rd/config.txt + ${{env:TARGET_NAME}}.7z  ${{env:TARGET_NAME}}_setup.exe
+        dir
+        cd ..
 
     - name: Release
       if: startsWith(github.event.ref, 'refs/tags/')
