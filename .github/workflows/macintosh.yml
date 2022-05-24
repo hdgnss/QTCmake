@@ -38,6 +38,11 @@ jobs:
     - name: Build
       run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
 
+    - name: Check
+      run: |
+        ls -l build
+        pwd
+
     - name: Release
       if: startsWith(github.event.ref, 'refs/tags/')
       uses: svenstaro/upload-release-action@v2

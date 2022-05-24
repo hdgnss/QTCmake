@@ -49,11 +49,10 @@ jobs:
         windeployqt --no-translations --compiler-runtime build\Release\${env:TARGET_NAME}.exe
         echo B
         ls build\Release
-        py7zr --version
         cd build
         echo C
         ls Release
-        py7zr a QTCmake.7z Release 
+        py7zr c QTCmake.7z Release 
         echo D
         ls Release
         cd ..
