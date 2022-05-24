@@ -38,15 +38,15 @@ jobs:
     - name: Check
       shell: pwsh
       run: |
-        ls build
-        rm -r build\*.h
-        rm -r build\*.obj
-        rm -r build\*.cpp
-        ls build
+        ls build\Release
+        rm -r build\Release\*.h
+        rm -r build\Release\*.obj
+        rm -r build\Release\*.cpp
+        ls build\Release
         echo A
-        windeployqt --no-translations --compiler-runtime build\${env:TARGET_NAME}.exe
+        windeployqt --no-translations --compiler-runtime build\Release\${env:TARGET_NAME}.exe
         echo B
-        ls build
+        ls build\Release
         py7zr --version
 
     - name: Release
